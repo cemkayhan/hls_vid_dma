@@ -12,9 +12,9 @@ void D_TOP_(
   ap_uint<16>& Pixel_Cntr_Axi,
   ap_uint<16>& Line_Cntr_Axi,
   ap_uint<16>& Frame_Cntr_Axi,
-  volatile ap_uint<16>* Pixel_Cntr,
-  volatile ap_uint<16>* Line_Cntr,
-  volatile ap_uint<16>* Frame_Cntr
+  ap_uint<16>& Pixel_Cntr,
+  ap_uint<16>& Line_Cntr,
+  ap_uint<16>& Frame_Cntr
 );
 
 #endif

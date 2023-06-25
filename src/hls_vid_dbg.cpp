@@ -22,6 +22,8 @@ void D_TOP_(
 #pragma HLS INTERFACE axis port=Vid_In
 #pragma HLS INTERFACE axis port=Vid_Out
 
+#pragma HLS PIPELINE II=1
+
   static ap_uint<16> Pix_Cntr_=0;
 #pragma HLS RESET variable=Pix_Cntr_
 
@@ -31,21 +33,31 @@ void D_TOP_(
   static ap_uint<16> Frame_Cntr_=0;
 #pragma HLS RESET variable=Frame_Cntr_
 
-#pragma HLS PIPELINE
-
   ap_axiu<Axis_Vid_Busw<D_PIX_DEPTH_,D_PPC_>::Value,1,1,1> Pix;
   Vid_In >> Pix;
   Vid_Out << Pix;
 
   if(Pix.last){
+#if 1==D_ENABLE_PIXEL_CNTR_
     Pix_Cntr_=0;
+#endif
+#if 1==D_ENABLE_LINE_CNTR_
     ++Line_Cntr_;
+#endif
   }else if(Pix.user){
+#if 1==D_ENABLE_PIXEL_CNTR_
     ++Pix_Cntr_;
+#endif
+#if 1==D_ENABLE_LINE_CNTR_
     Line_Cntr_=0;
+#endif
+#if 1==D_ENABLE_FRAME_CNTR_
     ++Frame_Cntr_;
+#endif
   }else{
+#if 1==D_ENABLE_PIXEL_CNTR_
     ++Pix_Cntr_;
+#endif
   }
 
   Pixel_Cntr=Pix_Cntr_;
