@@ -31,7 +31,7 @@ void D_TOP_(
 
   loopRows: for(auto I=0;I<Height;++I){
     loopCols: for(auto J=0;J<Width;++J){
-#pragma HLS DATAFLOW
+#pragma HLS PIPELINE II=1 rewind
       Broadcast<0,D_DEPTH_,D_PPC_>(
         Vid_In,
         Vid_Out1,
