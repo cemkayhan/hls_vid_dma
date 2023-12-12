@@ -63,9 +63,13 @@ void D_TOP_
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x18 port=Height
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x20 port=Channel_En
 
-  loopRows: for(auto I=0;I<Height;++I){
-    loopCols: for(auto J=0;J<Width;++J){
-#pragma HLS PIPELINE II=1 rewind
+  ap_uint<16> Width_=Width;
+  ap_uint<16> Height_=Height;
+  ap_uint<16> Channel_En_=Channel_En;
+
+  loopRows: for(auto I=0;I<Height_;++I){
+    loopCols: for(auto J=0;J<Width_;++J){
+#pragma HLS PIPELINE II=1
       Broadcast<0,D_DEPTH_,D_PPC_>(
         Vid_In,
 #if 0<D_CHANNELS_
@@ -92,7 +96,7 @@ void D_TOP_
 #if 7<D_CHANNELS_
         Vid_Out8,
 #endif
-        Channel_En
+        Channel_En_
       );
     }
   }

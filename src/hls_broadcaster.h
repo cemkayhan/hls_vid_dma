@@ -67,7 +67,7 @@ static void Broadcast(
 #endif
   ap_uint<8> Channel_En
 ){
-#pragma HLS PIPELINE II=1
+#pragma HLS INLINE
 
   ap_axiu<Axi_Vid_Bus_Width<DEPTH_,PPC_>::Value,1,1,1> Pix;
   Vid_In>>Pix;
