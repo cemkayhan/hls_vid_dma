@@ -2,10 +2,12 @@
 
 D_DEPTH_=$(grep D_DEPTH_ ../CFLAGS|cut -d'=' -f2)
 D_PPC_=$(grep D_PPC_ ../CFLAGS|cut -d'=' -f2)
+D_CHANNELS_=$(grep D_CHANNELS_ ../CFLAGS|cut -d'=' -f2)
 D_ID_=$(cat ../ID)
 D_TOP_=$(cat ../TOP)_Id${D_ID_}
 
 CFLAGS=""
 CFLAGS="$CFLAGS -DD_DEPTH_=$D_DEPTH_"
 CFLAGS="$CFLAGS -DD_PPC_=$D_PPC_"
+CFLAGS="$CFLAGS -DD_CHANNELS_=$D_CHANNELS_"
 CFLAGS="$CFLAGS -DD_TOP_=$D_TOP_"
