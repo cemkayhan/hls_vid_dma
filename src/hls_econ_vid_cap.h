@@ -27,18 +27,18 @@ inline static void Create_Pix(
   
   if(0==Pix_Cntr&&0==Line_Cntr){
     Vid_Out_.user=1;
-    Vid_Out_.last=1;
+    Vid_Out_.last=0;
     Last_Pix=false;
     ++Pix_Cntr;
   } else if((Width/PPC_-1)==Pix_Cntr&&(Height-1)==Line_Cntr){
     Vid_Out_.user=0;
-    Vid_Out_.last=0;
+    Vid_Out_.last=1;
     Last_Pix=true;
     Pix_Cntr=0;
     Line_Cntr=0;
   } else if((Width/PPC_-1)==Pix_Cntr){
     Vid_Out_.user=0;
-    Vid_Out_.last=0;
+    Vid_Out_.last=1;
     Last_Pix=false;
     Pix_Cntr=0;
     ++Line_Cntr;
