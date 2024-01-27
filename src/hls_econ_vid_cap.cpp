@@ -75,15 +75,15 @@ void D_TOP_
   static ap_uint<(D_DEPTH_*2)*D_PPC_> Vid_In_Ppc_;
 #pragma HLS RESET variable=Vid_In_Ppc_ off
 
-  const auto PIX1_ {0};
+  const auto PIX1_ {1};
 #if 1<D_PPC_
-  const auto PIX2_ {1};
+  const auto PIX2_ {2};
 #endif
 #if 2<D_PPC_
-  const auto PIX3_ {2};
+  const auto PIX3_ {3};
 #endif
 #if 3<D_PPC_
-  const auto PIX4_ {3};
+  const auto PIX4_ {4};
 #endif
 
   const auto Test_Mode_ {Test_Mode};
@@ -126,9 +126,9 @@ void D_TOP_
     case Mystate::Wait_Data_Ppc1:
       Vid_In>>Vid_In_;
       if(Test_Mode_){
-        Vid_In_Ppc_(D_PPC_*PIX1_+D_DEPTH_*2-1,D_PPC_*PIX1_)=Test_Data_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX1_*D_DEPTH_*2-1,(PIX1_-1)*D_DEPTH_*2)=Test_Data_(D_DEPTH_*2-1,0);
       } else {
-        Vid_In_Ppc_(D_PPC_*PIX1_+D_DEPTH_*2-1,D_PPC_*PIX1_)=Vid_In_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX1_*D_DEPTH_*2-1,(PIX1_-1)*D_DEPTH_*2)=Vid_In_(D_DEPTH_*2-1,0);
       }
       if(3==Vid_In_(D_DEPTH_*2+1,D_DEPTH_*2)){
 #if 1<D_PPC_
@@ -161,9 +161,9 @@ void D_TOP_
     case Mystate::Wait_Data_Ppc2:
       Vid_In>>Vid_In_;
       if(Test_Mode_){
-        Vid_In_Ppc_(D_PPC_*PIX2_+D_DEPTH_*2-1,D_PPC_*PIX2_)=Test_Data_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX2_*D_DEPTH_*2-1,(PIX2_-1)*D_DEPTH_*2)=Test_Data_(D_DEPTH_*2-1,0);
       } else {
-        Vid_In_Ppc_(D_PPC_*PIX2_+D_DEPTH_*2-1,D_PPC_*PIX2_)=Vid_In_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX2_*D_DEPTH_*2-1,(PIX2_-1)*D_DEPTH_*2)=Vid_In_(D_DEPTH_*2-1,0);
       }
       if(3==Vid_In_(D_DEPTH_*2+1,D_DEPTH_*2)){
 #if 2<D_PPC_
@@ -197,9 +197,9 @@ void D_TOP_
     case Mystate::Wait_Data_Ppc3:
       Vid_In>>Vid_In_;
       if(Test_Mode_){
-        Vid_In_Ppc_(D_PPC_*PIX3_+D_DEPTH_*2-1,D_PPC_*PIX3_)=Test_Data_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX3_*D_DEPTH_*2-1,(PIX3_-1)*D_DEPTH_*2)=Test_Data_(D_DEPTH_*2-1,0);
       } else {
-        Vid_In_Ppc_(D_PPC_*PIX3_+D_DEPTH_*2-1,D_PPC_*PIX3_)=Vid_In_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX3_*D_DEPTH_*2-1,(PIX3_-1)*D_DEPTH_*2)=Vid_In_(D_DEPTH_*2-1,0);
       }
       if(3==Vid_In_(D_DEPTH_*2+1,D_DEPTH_*2)){
 #if 3<D_PPC_
@@ -233,9 +233,9 @@ void D_TOP_
     case Mystate::Wait_Data_Ppc4:
       Vid_In>>Vid_In_;
       if(Test_Mode_){
-        Vid_In_Ppc_(D_PPC_*PIX4_+D_DEPTH_*2-1,D_PPC_*PIX4_)=Test_Data_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX4_*D_DEPTH_*2-1,(PIX4_-1)*D_DEPTH_*2)=Test_Data_(D_DEPTH_*2-1,0);
       } else {
-        Vid_In_Ppc_(D_PPC_*PIX4_+D_DEPTH_*2-1,D_PPC_*PIX4_)=Vid_In_(D_DEPTH_*2-1,0);
+        Vid_In_Ppc_(PIX4_*D_DEPTH_*2-1,(PIX4_-1)*D_DEPTH_*2)=Vid_In_(D_DEPTH_*2-1,0);
       }
       if(3==Vid_In_(D_DEPTH_*2+1,D_DEPTH_*2)){
         Create_Pix<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_,D_MAX_COLS_,D_MAX_ROWS_>(
