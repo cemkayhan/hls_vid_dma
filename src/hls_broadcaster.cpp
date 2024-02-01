@@ -1,4 +1,4 @@
-#include "hls_intf_conv.h"
+#include "hls_broadcaster.h"
 
 void D_TOP_
 (
@@ -10,31 +10,76 @@ void D_TOP_
 #endif
   ap_uint<Bit_Width<D_MAX_COLS_>::Value> Width,
   ap_uint<Bit_Width<D_MAX_ROWS_>::Value> Height,
+  ap_uint<D_N_CHANNELS_> Channel_En,
 
 #if 1==D_VID_OUT_AXIS_
-  hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_Out,
+#if 0<D_N_CHANNELS_
+  hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_Out1,
+#endif
+#if 1<D_N_CHANNELS_
+  hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_Out2,
+#endif
+#if 2<D_N_CHANNELS_
+  hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_Out3,
+#endif
+#if 3<D_N_CHANNELS_
+  hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_Out4,
+#endif
 #endif
 #if 1==D_VID_OUT_AP_NONE_
-  ap_uint<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value>* Vid_Out,
-  ap_uint<1>* Vid_Out_Last,
-  ap_uint<1>* Vid_Out_User,
+#if 0<D_N_CHANNELS_
+  ap_uint<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value>* Vid_Out1,
+  ap_uint<1>* Vid_Out_Last1,
+  ap_uint<1>* Vid_Out_User1,
+#endif
+#if 1<D_N_CHANNELS_
+  ap_uint<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value>* Vid_Out2,
+  ap_uint<1>* Vid_Out_Last2,
+  ap_uint<1>* Vid_Out_User2,
+#endif
+#if 2<D_N_CHANNELS_
+  ap_uint<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value>* Vid_Out3,
+  ap_uint<1>* Vid_Out_Last3,
+  ap_uint<1>* Vid_Out_User3,
+#endif
+#if 3<D_N_CHANNELS_
+  ap_uint<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value>* Vid_Out4,
+  ap_uint<1>* Vid_Out_Last4,
+  ap_uint<1>* Vid_Out_User4,
+#endif
 #endif
 
   hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_In
 ){
 #pragma HLS INTERFACE axis port=Vid_In
 #if 1==D_VID_OUT_AXIS_
-#pragma HLS INTERFACE axis port=Vid_Out
+#pragma HLS INTERFACE axis port=Vid_Out1
+#pragma HLS INTERFACE axis port=Vid_Out2
+#pragma HLS INTERFACE axis port=Vid_Out3
+#pragma HLS INTERFACE axis port=Vid_Out4
 #endif
 #if 1==D_VID_OUT_AP_NONE_
-#pragma HLS INTERFACE ap_ovld port=Vid_Out
-#pragma HLS INTERFACE ap_none port=Vid_Out_Last
-#pragma HLS INTERFACE ap_none port=Vid_Out_User
+#pragma HLS INTERFACE ap_ovld port=Vid_Out1
+#pragma HLS INTERFACE ap_none port=Vid_Out_Last1
+#pragma HLS INTERFACE ap_none port=Vid_Out_User1
+
+#pragma HLS INTERFACE ap_ovld port=Vid_Out2
+#pragma HLS INTERFACE ap_none port=Vid_Out_Last2
+#pragma HLS INTERFACE ap_none port=Vid_Out_User2
+
+#pragma HLS INTERFACE ap_ovld port=Vid_Out3
+#pragma HLS INTERFACE ap_none port=Vid_Out_Last3
+#pragma HLS INTERFACE ap_none port=Vid_Out_User3
+
+#pragma HLS INTERFACE ap_ovld port=Vid_Out4
+#pragma HLS INTERFACE ap_none port=Vid_Out_Last4
+#pragma HLS INTERFACE ap_none port=Vid_Out_User4
 #endif
 
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE ap_none port=Width
 #pragma HLS INTERFACE ap_none port=Height
+#pragma HLS INTERFACE ap_none port=Channel_En
 
 #if 1==D_ENABLE_DEBUG_
 #pragma HLS INTERFACE ap_none port=Missing_Tuser
@@ -53,6 +98,7 @@ void D_TOP_
 
   const auto Width_ {Width};
   const auto Height_ {Height};
+  const auto Channel_En_ {Channel_En};
 
 #if 1==D_VID_OUT_AXIS_
   ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> Vid_Out_;
@@ -154,12 +200,56 @@ void D_TOP_
   }
 
 #if 1==D_VID_OUT_AXIS_
-  Vid_Out<<Vid_Out_;
+#if 0<D_N_CHANNELS_
+  if(Channel_En_(0,0)){
+    Vid_Out1<<Vid_Out_;
+  }
+#endif
+#if 1<D_N_CHANNELS_
+  if(Channel_En_(1,1)){
+    Vid_Out2<<Vid_Out_;
+  }
+#endif
+#if 2<D_N_CHANNELS_
+  if(Channel_En_(2,2)){
+    Vid_Out3<<Vid_Out_;
+  }
+#endif
+#if 3<D_N_CHANNELS_
+  if(Channel_En_(3,3)){
+    Vid_Out4<<Vid_Out_;
+  }
+#endif
 #endif
 #if 1==D_VID_OUT_AP_NONE_
-  *Vid_Out=Vid_Out_;
-  *Vid_Out_Last=Vid_Out_Last_;
-  *Vid_Out_User=Vid_Out_User_;
+#if 0<D_N_CHANNELS_
+  if(Channel_En_(0,0)){
+    *Vid_Out1=Vid_Out_;
+    *Vid_Out_Last1=Vid_Out_Last_;
+    *Vid_Out_User1=Vid_Out_User_;
+  }
+#endif
+#if 1<D_N_CHANNELS_
+  if(Channel_En_(1,1)){
+    *Vid_Out2=Vid_Out_;
+    *Vid_Out_Last2=Vid_Out_Last_;
+    *Vid_Out_User2=Vid_Out_User_;
+  }
+#endif
+#if 2<D_N_CHANNELS_
+  if(Channel_En_(2,2)){
+    *Vid_Out3=Vid_Out_;
+    *Vid_Out_Last3=Vid_Out_Last_;
+    *Vid_Out_User3=Vid_Out_User_;
+  }
+#endif
+#if 3<D_N_CHANNELS_
+  if(Channel_En_(3,3)){
+    *Vid_Out4=Vid_Out_;
+    *Vid_Out_Last4=Vid_Out_Last_;
+    *Vid_Out_User4=Vid_Out_User_;
+  }
+#endif
 #endif
 #if 1==D_ENABLE_DEBUG_
   *Missing_Tuser=Missing_Tuser_;
