@@ -41,10 +41,18 @@ void D_TOP_
 #pragma HLS INTERFACE ap_fifo port=Vid_In
 #pragma HLS INTERFACE axis port=Vid_Out
 
+#if 1==D_RETURN_AXILITE_
 #pragma HLS INTERFACE s_axilite port=return bundle=Ctrl
 #pragma HLS INTERFACE s_axilite port=Width bundle=Ctrl offset=0x10
 #pragma HLS INTERFACE s_axilite port=Height bundle=Ctrl offset=0x18
 #pragma HLS INTERFACE s_axilite port=Test_Mode bundle=Ctrl offset=0x20
+#endif
+#if 1==D_RETURN_AP_CTRL_NONE_
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE ap_none port=Width
+#pragma HLS INTERFACE ap_none port=Height
+#pragma HLS INTERFACE ap_none port=Test_Mode
+#endif
 
 #pragma HLS PIPELINE II=1
 
