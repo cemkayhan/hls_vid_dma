@@ -19,7 +19,9 @@ void D_TOP_
   ap_uint<32> Test_Data,
 
   ap_uint<Bit_Width<D_MAX_COLS_>::Value> Width,
+  ap_uint<Bit_Width<D_MAX_COLS_>::Value>* Width_Out,
   ap_uint<Bit_Width<D_MAX_ROWS_>::Value> Height,
+  ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* Height_Out,
 
   hls::stream<ap_uint<2+D_DEPTH_*2> >& Vid_In,
   hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_Out
@@ -40,6 +42,9 @@ void D_TOP_
 #pragma HLS INTERFACE ap_none port=Test_Data 
 #pragma HLS INTERFACE ap_fifo port=Vid_In
 #pragma HLS INTERFACE axis port=Vid_Out
+
+#pragma HLS INTERFACE ap_none port=Width_Out
+#pragma HLS INTERFACE ap_none port=Height_Out
 
 #if 1==D_RETURN_AXILITE_
 #pragma HLS INTERFACE s_axilite port=return bundle=Ctrl
@@ -115,6 +120,9 @@ void D_TOP_
   ap_uint<1> Missed_Pix4_Error_ {0};
 #endif
 #endif
+
+  *Width_Out=Width_;
+  *Height_Out=Height_;
 
   switch(Mystate_){
     case Mystate::Reset:
