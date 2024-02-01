@@ -76,10 +76,18 @@ void D_TOP_
 #pragma HLS INTERFACE ap_none port=Vid_Out_User4
 #endif
 
+#if 1==D_RETURN_AP_CTRL_NONE_
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE ap_none port=Width
 #pragma HLS INTERFACE ap_none port=Height
 #pragma HLS INTERFACE ap_none port=Channel_En
+#endif
+#if 1==D_RETURN_AXILITE_
+#pragma HLS INTERFACE s_axilite port=return
+#pragma HLS INTERFACE s_axilite port=Width offset=0x10
+#pragma HLS INTERFACE s_axilite port=Height offset=0x18
+#pragma HLS INTERFACE s_axilite port=Channel_En offset=0x20
+#endif
 
 #if 1==D_ENABLE_DEBUG_
 #pragma HLS INTERFACE ap_none port=Missing_Tuser
