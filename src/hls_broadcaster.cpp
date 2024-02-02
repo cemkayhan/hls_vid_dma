@@ -12,6 +12,12 @@ void D_TOP_
   ap_uint<Bit_Width<D_MAX_ROWS_>::Value> Height,
   ap_uint<D_N_CHANNELS_> Channel_En,
 
+#if 1==D_RETURN_AXILITE_
+  ap_uint<Bit_Width<D_MAX_COLS_>::Value>* Width_Out,
+  ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* Height_Out,
+  ap_uint<D_N_CHANNELS_>* Channel_En_Out,
+#endif
+
 #if 1==D_VID_OUT_AXIS_
 #if 0<D_N_CHANNELS_
   hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> >& Vid_Out1,
@@ -87,6 +93,10 @@ void D_TOP_
 #pragma HLS INTERFACE s_axilite port=Width offset=0x10
 #pragma HLS INTERFACE s_axilite port=Height offset=0x18
 #pragma HLS INTERFACE s_axilite port=Channel_En offset=0x20
+
+#pragma HLS INTERFACE ap_none port=Width_Out
+#pragma HLS INTERFACE ap_none port=Height_Out
+#pragma HLS INTERFACE ap_none port=Channel_En_Out
 #endif
 
 #if 1==D_ENABLE_DEBUG_
@@ -107,6 +117,12 @@ void D_TOP_
   const auto Width_ {Width};
   const auto Height_ {Height};
   const auto Channel_En_ {Channel_En};
+
+#if 1==D_RETURN_AXILITE_
+  *Width_Out=Width_;
+  *Height_Out=Height_;
+  *Channel_En_Out=Channel_En_;
+#endif
 
 #if 1==D_VID_OUT_AXIS_
   ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_PPC_>::Value,1,1,1> Vid_Out_;
