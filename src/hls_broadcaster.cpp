@@ -59,27 +59,43 @@ void D_TOP_
 ){
 #pragma HLS INTERFACE axis port=Vid_In
 #if 1==D_VID_OUT_AXIS_
+#if 0<D_N_CHANNELS_
 #pragma HLS INTERFACE axis port=Vid_Out1
+#endif
+#if 1<D_N_CHANNELS_
 #pragma HLS INTERFACE axis port=Vid_Out2
+#endif
+#if 2<D_N_CHANNELS_
 #pragma HLS INTERFACE axis port=Vid_Out3
+#endif
+#if 3<D_N_CHANNELS_
 #pragma HLS INTERFACE axis port=Vid_Out4
 #endif
+#endif
 #if 1==D_VID_OUT_AP_NONE_
+#if 0<D_N_CHANNELS_
 #pragma HLS INTERFACE ap_ovld port=Vid_Out1
 #pragma HLS INTERFACE ap_none port=Vid_Out_Last1
 #pragma HLS INTERFACE ap_none port=Vid_Out_User1
+#endif
 
+#if 1<D_N_CHANNELS_
 #pragma HLS INTERFACE ap_ovld port=Vid_Out2
 #pragma HLS INTERFACE ap_none port=Vid_Out_Last2
 #pragma HLS INTERFACE ap_none port=Vid_Out_User2
+#endif
 
+#if 2<D_N_CHANNELS_
 #pragma HLS INTERFACE ap_ovld port=Vid_Out3
 #pragma HLS INTERFACE ap_none port=Vid_Out_Last3
 #pragma HLS INTERFACE ap_none port=Vid_Out_User3
+#endif
 
+#if 3<D_N_CHANNELS_
 #pragma HLS INTERFACE ap_ovld port=Vid_Out4
 #pragma HLS INTERFACE ap_none port=Vid_Out_Last4
 #pragma HLS INTERFACE ap_none port=Vid_Out_User4
+#endif
 #endif
 
 #if 1==D_RETURN_AP_CTRL_NONE_
