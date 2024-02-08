@@ -228,6 +228,10 @@ void D_TOP_
     Vid_Out_.user=0;
     Vid_Out_.last=0;
 #endif
+#if 1==D_VID_OUT_AP_NONE_
+    Vid_Out_User_=0;
+    Vid_Out_Last_=0;
+#endif
     ++Pix_Cntr_;
 #if 1==D_ENABLE_DEBUG_
     if(Vid_In_.user){
