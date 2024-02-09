@@ -116,10 +116,10 @@ void D_TOP_
 #endif
 
 #if 1==D_ENABLE_DEBUG_
-#pragma HLS INTERFACE ap_none port=Missing_Tuser
-#pragma HLS INTERFACE ap_none port=Missing_Tlast
-#pragma HLS INTERFACE ap_none port=Late_Tuser
-#pragma HLS INTERFACE ap_none port=Early_Tlast
+#pragma HLS INTERFACE ap_ovld port=Missing_Tuser
+#pragma HLS INTERFACE ap_ovld port=Missing_Tlast
+#pragma HLS INTERFACE ap_ovld port=Late_Tuser
+#pragma HLS INTERFACE ap_ovld port=Early_Tlast
 #endif
 
 #pragma HLS PIPELINE II=1
