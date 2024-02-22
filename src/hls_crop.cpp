@@ -14,8 +14,6 @@ void D_TOP_
   ap_uint<Bit_Width<D_MAX_ROWS_>::Value> Out_Height
 ){
 #pragma HLS INTERFACE axis port=Vid_In
-
-#pragma HLS INTERFACE axis port=Vid_In
 #pragma HLS INTERFACE axis port=Vid_Out
 
 #pragma HLS INTERFACE s_axilite bundle=Ctrl port=return
