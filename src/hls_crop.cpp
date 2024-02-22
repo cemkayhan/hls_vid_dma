@@ -38,15 +38,27 @@ void D_TOP_
   loopRows: for(auto J=ap_uint<Bit_Width<D_MAX_ROWS_>::Value> {0};J<In_Height_;++J){
 #pragma HLS LOOP_TRIPCOUNT min=D_MAX_ROWS_ max=D_MAX_ROWS_
 
-    loopCols: for(auto K=ap_uint<Bit_Width<D_MAX_COLS_/D_PPC_>::Value> {0};K<In_Width_/D_PPC_;++K){
+    loopCols: for(auto K=ap_uint<Bit_Width<D_MAX_COLS_>::Value> {0};K<In_Width_;K+=D_PPC_){
 #pragma HLS PIPELINE II=1
 #pragma HLS LOOP_TRIPCOUNT min=D_MAX_COLS_/D_PPC_ max=D_MAX_COLS_/D_PPC_
 
       Vid_In>>Vid_In_;
 
+      if(K==Out_X_&&J==Out_Y_){
+        Vid_In_.user=1;
+      } else {
+        Vid_In_.user=0;
+      }
+
+      if(K==Out_X_+Out_Width_-D_PPC_){
+        Vid_In_.last=1;
+      } else {
+        Vid_In_.last=0;
+      }
+
       if(K>=Out_X_&&K<(Out_X_+Out_Width_)&&J>=Out_Y_&&J<(Out_Y_+Out_Height_)){
         Vid_Out<<Vid_In_;
-      } 
+      }
     }
   }
 }
