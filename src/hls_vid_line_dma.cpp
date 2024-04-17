@@ -22,7 +22,7 @@ static void Func_S2mm
       ap_uint<2*DEPTH_*S2MM_AXI_PPC_> Vid_In_Axi_;
       loopPix: for(auto M=0;M<S2MM_AXI_PPC_/S2MM_AXIS_PPC_;++M){
 #pragma HLS UNROLL
-        Vid_In_Axi_(M*2*DEPTH_+2*DEPTH_-1,M*2*DEPTH_)=Vid_In.read().data;
+        Vid_In_Axi_(M*2*DEPTH_*S2MM_AXIS_PPC_+2*DEPTH_*S2MM_AXIS_PPC_-1,M*2*DEPTH_*S2MM_AXIS_PPC_)=Vid_In.read().data;
       }
 
       Vid_In_Axi[Stride*J+K]=Vid_In_Axi_;
@@ -62,7 +62,7 @@ static void Func_Mm2s
         ap_axiu<Axi_Vid_Bus_Width<COLOR_CHANNELS_,DEPTH_,MM2S_AXIS_PPC_>::Value,1,1,1> Vid_Out_;
         Vid_Out_.keep=-1;
         Vid_Out_.strb=-1;
-        Vid_Out_.data=Vid_Out_Axi_(M*2*DEPTH_+2*DEPTH_-1,M*2*DEPTH_);
+        Vid_Out_.data=Vid_Out_Axi_(M*2*DEPTH_*MM2S_AXIS_PPC_+2*DEPTH_*MM2S_AXIS_PPC_-1,M*2*DEPTH_*MM2S_AXIS_PPC_);
         if(0==J&&0==K&&0==M){
           Vid_Out_.user=1;
           Vid_Out_.last=0;
