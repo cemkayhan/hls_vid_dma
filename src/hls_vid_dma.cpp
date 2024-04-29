@@ -18,6 +18,10 @@ static void Func_S2mm
   loopRows: for(auto J=ap_uint<Bit_Width<MAX_ROWS_>::Value> {0};J<Height;++J){
 #pragma HLS LOOP_TRIPCOUNT min=MAX_ROWS_ max=MAX_ROWS_
 
+#if 1==D_ENABLE_S2MM_ACTIVE_LINE_
+    *Active_Line=J;
+#endif
+
     loopCols: for(auto K=ap_uint<Bit_Width<MAX_COLS_/S2MM_AXI_PPC_>::Value> {0};K<Width/S2MM_AXI_PPC_;++K){
 #pragma HLS PIPELINE II=S2MM_AXI_PPC_/S2MM_AXIS_PPC_
 #pragma HLS LOOP_TRIPCOUNT min=MAX_COLS_/S2MM_AXI_PPC_ max=MAX_COLS_/S2MM_AXI_PPC_
@@ -30,10 +34,6 @@ static void Func_S2mm
 
       Axi[Stride*J+K]=Axi_;
     }
-
-#if 1==D_ENABLE_S2MM_ACTIVE_LINE_
-    *Active_Line=J;
-#endif
   }
 }
 #endif
@@ -55,6 +55,10 @@ static void Func_Mm2s
   
   loopRows: for(auto J=ap_uint<Bit_Width<MAX_ROWS_>::Value> {0};J<Height;++J){
 #pragma HLS LOOP_TRIPCOUNT min=MAX_ROWS_ max=MAX_ROWS_
+
+#if 1==D_ENABLE_MM2S_ACTIVE_LINE_
+    *Active_Line=J;
+#endif
 
     loopCols: for(auto K=ap_uint<Bit_Width<D_MAX_COLS_/MM2S_AXI_PPC_>::Value> {0};K<Width/MM2S_AXI_PPC_;++K){
 #pragma HLS PIPELINE II=MM2S_AXI_PPC_/MM2S_AXIS_PPC_
@@ -83,10 +87,6 @@ static void Func_Mm2s
         Axis.write(Axis_);
       }
     }
-
-#if 1==D_ENABLE_MM2S_ACTIVE_LINE_
-    *Active_Line=J;
-#endif
   }
 }
 #endif
@@ -133,7 +133,7 @@ void D_TOP_
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x20 port=S2mm_Stride
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x28 port=S2mm_Axi
 #if 1==D_ENABLE_S2MM_ACTIVE_LINE_
-#pragma HLS INTERFACE ap_none port=S2mm_Active_Line
+#pragma HLS INTERFACE ap_none port=S2mm_Active_Line register
 #endif
 #endif
 
@@ -152,7 +152,7 @@ void D_TOP_
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x28 port=Mm2s_Axi
 #endif
 #if 1==D_ENABLE_MM2S_ACTIVE_LINE_
-#pragma HLS INTERFACE ap_none port=Mm2s_Active_Line
+#pragma HLS INTERFACE ap_none port=Mm2s_Active_Line register
 #endif
 #endif
 
