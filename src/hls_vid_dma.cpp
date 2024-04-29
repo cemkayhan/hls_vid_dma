@@ -44,6 +44,9 @@ static void Func_Mm2s
 (
   hls::stream<ap_axiu<Axi_Vid_Bus_Width<COLOR_CHANNELS_,DEPTH_,MM2S_AXIS_PPC_>::Value,1,1,1> >& Axis,
   ap_uint<2*DEPTH_*MM2S_AXI_PPC_> Axi[MAX_ROWS_*MAX_STRIDE_],
+#if 1==D_ENABLE_MM2S_ACTIVE_LINE_
+  volatile ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* Active_Line,
+#endif
   ap_uint<Bit_Width<MAX_COLS_>::Value> Width,
   ap_uint<Bit_Width<MAX_ROWS_>::Value> Height,
   ap_uint<Bit_Width<MAX_STRIDE_>::Value> Stride
@@ -80,6 +83,10 @@ static void Func_Mm2s
         Axis.write(Axis_);
       }
     }
+
+#if 1==D_ENABLE_MM2S_ACTIVE_LINE_
+    *Active_Line=J;
+#endif
   }
 }
 #endif
@@ -91,7 +98,7 @@ void D_TOP_
   ap_uint<2*D_DEPTH_*D_S2MM_AXI_PPC_> S2mm_Axi[D_MAX_ROWS_*D_MAX_STRIDE_],
 
 #if 1==D_ENABLE_S2MM_ACTIVE_LINE_
-  volatile ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* Active_Line,
+  volatile ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* S2mm_Active_Line,
 #endif
 
   ap_uint<Bit_Width<D_MAX_COLS_>::Value> S2mm_Width,
@@ -106,6 +113,10 @@ void D_TOP_
 #if 1==D_ENABLE_MM2S_
   hls::stream<ap_axiu<Axi_Vid_Bus_Width<D_COLOR_CHANNELS_,D_DEPTH_,D_MM2S_AXIS_PPC_>::Value,1,1,1> >& Mm2s_Axis,
   ap_uint<2*D_DEPTH_*D_MM2S_AXI_PPC_> Mm2s_Axi[D_MAX_ROWS_*D_MAX_STRIDE_],
+
+#if 1==D_ENABLE_MM2S_ACTIVE_LINE_
+  volatile ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* Mm2s_Active_Line,
+#endif
 
   ap_uint<Bit_Width<D_MAX_COLS_>::Value> Mm2s_Width,
   ap_uint<Bit_Width<D_MAX_ROWS_>::Value> Mm2s_Height,
@@ -122,7 +133,7 @@ void D_TOP_
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x20 port=S2mm_Stride
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x28 port=S2mm_Axi
 #if 1==D_ENABLE_S2MM_ACTIVE_LINE_
-#pragma HLS INTERFACE ap_none port=Active_Line
+#pragma HLS INTERFACE ap_none port=S2mm_Active_Line
 #endif
 #endif
 
@@ -140,6 +151,9 @@ void D_TOP_
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x20 port=Mm2s_Stride
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x28 port=Mm2s_Axi
 #endif
+#if 1==D_ENABLE_MM2S_ACTIVE_LINE_
+#pragma HLS INTERFACE ap_none port=Mm2s_Active_Line
+#endif
 #endif
 
 #pragma HLS DATAFLOW
@@ -149,7 +163,7 @@ void D_TOP_
     S2mm_Axis,
     S2mm_Axi,
 #if 1==D_ENABLE_S2MM_ACTIVE_LINE_
-    Active_Line,
+    S2mm_Active_Line,
 #endif
     S2mm_Width,
     S2mm_Height,
@@ -161,6 +175,9 @@ void D_TOP_
   Func_Mm2s<D_COLOR_CHANNELS_,D_DEPTH_,D_MM2S_AXIS_PPC_,D_MM2S_AXI_PPC_,D_MAX_ROWS_,D_MAX_COLS_,D_MAX_STRIDE_>(
     Mm2s_Axis,
     Mm2s_Axi,
+#if 1==D_ENABLE_MM2S_ACTIVE_LINE_
+    Mm2s_Active_Line,
+#endif
     Mm2s_Width,
     Mm2s_Height,
     Mm2s_Stride
