@@ -127,7 +127,7 @@ void D_TOP_
 
 #if 1==D_ENABLE_S2MM_
 #pragma HLS INTERFACE axis port=S2mm_Axis
-#pragma HLS INTERFACE m_axi port=S2mm_Axi offset=slave bundle=s2mm depth=D_MAX_ROWS_*D_MAX_STRIDE_ max_write_burst_length=D_S2MM_MAX_BURST_LENGTH_
+#pragma HLS INTERFACE m_axi port=S2mm_Axi offset=slave bundle=s2mm depth=D_MAX_ROWS_*D_MAX_STRIDE_ max_write_burst_length=D_S2MM_MAX_BURST_LENGTH_ num_read_outstanding=1 max_read_burst_length=2
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x10 port=S2mm_Width 
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x18 port=S2mm_Height
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x20 port=S2mm_Stride
@@ -139,7 +139,7 @@ void D_TOP_
 
 #if 1==D_ENABLE_MM2S_
 #pragma HLS INTERFACE axis port=Mm2s_Axis
-#pragma HLS INTERFACE m_axi port=Mm2s_Axi offset=slave bundle=mm2s depth=D_MAX_ROWS_*D_MAX_STRIDE_ max_read_burst_length=D_MM2S_MAX_BURST_LENGTH_
+#pragma HLS INTERFACE m_axi port=Mm2s_Axi offset=slave bundle=mm2s depth=D_MAX_ROWS_*D_MAX_STRIDE_ max_read_burst_length=D_MM2S_MAX_BURST_LENGTH_ num_write_outstanding=1 max_write_burst_length=2
 #if 1==D_ENABLE_S2MM_
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x30 port=Mm2s_Width
 #pragma HLS INTERFACE s_axilite bundle=Ctrl offset=0x38 port=Mm2s_Height
