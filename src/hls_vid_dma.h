@@ -47,7 +47,7 @@ static void Func_S2mm
   hls::stream<ap_axiu<Axi_Vid_Bus_Width<COLOR_CHANNELS_,DEPTH_,S2MM_AXIS_PPC_>::Value,1,1,1> >& Axis,
   ap_uint<2*DEPTH_*S2MM_AXI_PPC_> Axi[MAX_ROWS_*MAX_STRIDE_],
 #if 1==D_ENABLE_S2MM_ACTIVE_LINE_
-  volatile ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* Active_Line,
+  volatile ap_uint<Bit_Width<MAX_ROWS_>::Value>* Active_Line,
 #endif
 #if 1==D_ENABLE_S2MM_STRIDE_
   ap_uint<Bit_Width<MAX_STRIDE_>::Value> Stride,
@@ -91,7 +91,7 @@ static void Func_Mm2s
   hls::stream<ap_axiu<Axi_Vid_Bus_Width<COLOR_CHANNELS_,DEPTH_,MM2S_AXIS_PPC_>::Value,1,1,1> >& Axis,
   ap_uint<2*DEPTH_*MM2S_AXI_PPC_> Axi[MAX_ROWS_*MAX_STRIDE_],
 #if 1==D_ENABLE_MM2S_ACTIVE_LINE_
-  volatile ap_uint<Bit_Width<D_MAX_ROWS_>::Value>* Active_Line,
+  volatile ap_uint<Bit_Width<MAX_ROWS_>::Value>* Active_Line,
 #endif
 #if 1==D_ENABLE_MM2S_STRIDE_
   ap_uint<Bit_Width<MAX_STRIDE_>::Value> Stride,
@@ -108,7 +108,7 @@ static void Func_Mm2s
     *Active_Line=J;
 #endif
 
-    loopCols: for(auto K=ap_uint<Bit_Width<D_MAX_COLS_/MM2S_AXI_PPC_>::Value> {0};K<Width/MM2S_AXI_PPC_;++K){
+    loopCols: for(auto K=ap_uint<Bit_Width<MAX_COLS_/MM2S_AXI_PPC_>::Value> {0};K<Width/MM2S_AXI_PPC_;++K){
 #pragma HLS PIPELINE II=MM2S_AXI_PPC_/MM2S_AXIS_PPC_
 #pragma HLS LOOP_TRIPCOUNT min=MAX_COLS_/MM2S_AXI_PPC_ max=MAX_COLS_/MM2S_AXI_PPC_
 
