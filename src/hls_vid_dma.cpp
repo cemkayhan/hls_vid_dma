@@ -14,7 +14,11 @@ void D_TOP_
   ap_uint<Bit_Width<D_MAX_STRIDE_>::Value> S2mm_Stride,
 #endif
   ap_uint<Bit_Width<D_MAX_COLS_>::Value> S2mm_Width,
+#if 1==D_ENABLE_MM2S_
   ap_uint<Bit_Width<D_MAX_ROWS_>::Value> S2mm_Height,
+#else
+  ap_uint<Bit_Width<D_MAX_ROWS_>::Value> S2mm_Height
+#endif
 #endif
 
 #if 1==D_ENABLE_MM2S_
